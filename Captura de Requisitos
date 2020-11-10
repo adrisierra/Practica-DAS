@@ -1,0 +1,61 @@
+Una tienda virtual está basada en una arquitectura monolítica y se desea migrar a una
+arquitectura de microservicios más flexible y escalable. El sistema actual gestiona las
+solicitudes mediante una lógica de negocio y bases de datos de manera que las respuestas a
+las peticiones se devuelven en HTML y JSON. La aplicación debe admitir una variedad de
+clientes, incluidos exploradores de escritorio y Tablet, así como como acceso vía móvil. La
+presentación de las páginas web y los productos deberá adaptarse automáticamente al cliente
+desde PC, Tablet o móvil. La aplicación constará de estos tipos de componentes:
+
+• Componentes de presentación. Son los responsables del control de la interfaz de usuario
+y el consumo de servicios remotos.
+
+• Lógica de dominio o de negocios. Se trata de la lógica de dominio de la aplicación.
+
+• Lógica de acceso a bases de datos. Son los componentes de acceso a datos responsables
+de obtener acceso a las bases de datos (SQL o NoSQL).
+
+• Lógica de integración de aplicaciones. Incluye un canal de mensajería, basado
+principalmente en agentes de mensajes.
+
+La nueva aplicación deberá ser capaz de integrar microservicios o aplicaciones externas de
+forma asincrónica, para que se refuerce la fiabilidad de los microservicios nativos de la tienda
+virtual. Con este enfoque, se pretende obtener una aplicación con alta es escalabilidad y
+permitir que sus subsistemas verticales se escalen horizontalmente de forma autónoma,
+porque algunos subsistemas requerirán mayor escalabilidad que otros. 
+Las nuevas necesidades van a requerir que la siguiente funcionalidad se migre a microservicios
+independientes que se comuniquen mediante el protocolo REST y de forma asíncrona (por
+ejemplo, mediante AMQP), y que se pueda desarrollar e implementar un microservicio
+determinado sin afectar a otros subsistemas. Esta funcionalidad que se propone migrar
+soportará las siguientes tareas: Identificación de usuarios, catálogo de microservicios y
+procesado de pedidos. Estas tareas se soportarán en una base de datos SQL. Además, se
+migrarán las funcionalidades de la cesta de compra que usará una caché y la localización de
+microservicios de terceros que irá en una base de datos MongoDB.
+Cada microservicio tiene su propia base de datos, lo que permite separarlo totalmente de
+otros microservicios. Cuando sea necesario, la coherencia entre las bases de datos de los
+diferentes microservicios se logra mediante eventos de integración de nivel de aplicación (a
+través de un bus de eventos lógicos), como por ejemplo mediante Command and Query
+Responsibility Segregation (CQRS).
+Por otra parte, los clientes móviles y de páginas Web se comunican con los puntos de conexión
+de puerta de enlace de API única y, a continuación, se comunican con los microservicios. Los
+clientes web tradicionales se comunican con el microservicio MVC, que se comunica con otros
+microservicios mediante la puerta de enlace de API. Será posible utilizar varios contenedores
+de microservicios dentro de un único host o bien utilizar un cluster para orquestar
+contenedores donde cada contenedor se ejecuta en una host diferente, de manera que cada
+host o nodo podría ejecutar un cierto número de contenedores.
+Además, se utilizará dos tipos de comunicación
+
+• Comunicación de cliente a microservicio de HTTP a través de un Gateway que contiene
+diversas APIs con el fin de poder consultar las actualizaciones desde las aplicaciones
+cliente.
+
+• Comunicación asincrónica basada en eventos. Se realiza a través de un bus de eventos
+para propagar las actualizaciones entre los microservicios o para la integración con
+aplicaciones externas. El bus de eventos se puede implementar con cualquier tecnología
+de infraestructura de agente de mensajería como RabbitMQ, o bien mediante Service
+Bus de nivel superior (nivel de abstracción) como Azure Service Bus, NServiceBus,
+MassTransit o Brighter.
+Las aplicaciones cliente pueden comunicarse con esos microservicios que se ejecuten como
+contenedores a través de las direcciones URL públicas publicadas por las puertas de enlace de
+API. El alumno deberá suponer que datos requiere cada microservicio o el cliente para
+gestionar una tienda virtual (e.g. numero de pedido, identificación de cliente, producto,
+cantidad, precio, total, forma de pago, etc.) 
